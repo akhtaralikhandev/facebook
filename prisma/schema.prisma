@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  user_id       String          @id @unique @default(uuid())
+  username      String
+  email         String          @unique
+  password      String
+  profilePic    String          @default("")
+  posts         Posts[]
+  comments      Comments[]
+  likes         Likes[]
+  userChatGroup userChatGroup[]
+}
+
+model Posts {
+  post_id  String     @id @unique @default(uuid())
+  texts    String?
+  image    String?
+  userId   String
+  user     Users      @relation(fields: [userId], references: [user_id])
+  Comments Comments[]
+  Likes    Likes[]
+}
+
+model Comments {
+  comment_id String @id @unique @default(uuid())
+  comment    String
+  postId     String
+  userId     String
+  user       Users  @relation(fields: [userId], references: [user_id])
+  Posts      Posts? @relation(fields: [postId], references: [post_id])
+}
+
+model Likes {
+  like_id String @id @unique @default(uuid())
+  postId  String
+  userId  String
+  user    Users  @relation(fields: [userId], references: [user_id])
+  post    Posts  @relation(fields: [postId], references: [post_id])
+}
+
+model ChatGroup {
+  chat_group_id String          @id @unique @default(uuid())
+  title         String
+  userChatGroup userChatGroup[]
+}
+
+model userChatGroup {
+  user_chat_group_id String    @id @unique @default(uuid())
+  user_id            String
+  User               Users     @relation(fields: [user_id], references: [user_id])
+  chat_group_id      String
+  chatGroup          ChatGroup @relation(fields: [chat_group_id], references: [chat_group_id])
+  messages           message[]
+}
+
+model message {
+  message_id         String        @id @unique @default(uuid())
+  message            String
+  user_chat_group_id String
+  userChatGroup      userChatGroup @relation(fields: [user_chat_group_id], references: [user_chat_group_id])
+}

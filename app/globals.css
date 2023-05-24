@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.messagesListHeight {
+  height: 550px;
+}
+.rightSideHomeCreateGroup {
+  height: 90vh;
+}
