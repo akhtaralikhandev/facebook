@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { SessionProvider } from "next-auth/react";
-import "../../app/globals.css";
+import "../app/globals.css";
 import { Provider } from "react-redux";
 import store from "../redux/app/store";
 import { PersistGate } from "redux-persist/integration/react";
